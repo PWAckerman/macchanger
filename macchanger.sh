@@ -31,7 +31,7 @@ then
 fi
 
 #If the interface environment variable isn't set, ask for clarification
-if [[ -z "${INTERFACE}" ]]
+if [ -z "${INTERFACE}" ]
 then
   echo "Which interface?"
   read INTERFACE
