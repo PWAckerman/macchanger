@@ -30,14 +30,18 @@ then
   exit $E_NOTROOT
 fi
 
-echo "Which interface?"
-read INTERFACE
+#If the interface environment variable isn't set, ask for clarification
+if [[ -z "${INTERFACE}" ]]
+then
+  echo "Which interface?"
+  read INTERFACE
+fi
 
 CHOSEN_INDEX=$(( $RANDOM % 5 ))
 CHOSEN_VENDOR="${VENDOR_OCTETS[CHOSEN_INDEX]}"
 NEWMAC=$(echo "$CHOSEN_VENDOR$RANDOM_OCTET" | sed 's/\(..\)/\1:/g; s/.$//')
 OLDMAC=$( ifconfig "$INTERFACE" | grep ether | awk -F' ' '{print $2}')
-ifconfig "$INTERFACE" ether "$NEWMAC"
+$( whereis ifconfig ) "$INTERFACE" ether "$NEWMAC"
 echo $OLDMAC ">>" $NEWMAC
 exit 0
 
